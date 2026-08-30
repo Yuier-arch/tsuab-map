@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Карта кампуса ТГАСУ</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position: absolute;">
+    <defs>
+        <clipPath id="map-clip">
+            <polygon points="149,1602 2121,2190 3430,1845 4888,2380 5307,3229 4379,4751 6881,5952 6845,6647 6956,6933 6845,7111 6494,7081 5946,7693 5795,7945 5778,8128 3975,8186 3776,8486 2983,8782 2172,8671 1429,7941 1371,7656 1760,6412 1109,3903 111,2442 145,1603" />
+        </clipPath>
+    </defs>
+</svg>
+    
+    <div id="map"></div>
+
+    <!-- Кнопка меню -->
+    <button id="menu-btn" onclick="CampusApp.openMenu()">☰</button>
+
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Поиск..." oninput="CampusApp.handleSearch(this.value)">
+        <div id="search-results" class="search-results"></div>
+    </div>
+    
+    <!-- Кнопка сброса вида -->
+    <button id="reset-view-btn" onclick="CampusApp.resetView()" title="Показать всю карту"></button>
+    
+    <!-- Затемнение -->
+    <div id="menu-overlay" onclick="CampusApp.closeAllMenus()"></div>
+    
+    <!-- Основное меню -->
+    <div id="side-menu">
+        <div class="menu-header">
+            <span>Меню</span>
+            <button class="close-menu" onclick="CampusApp.closeAllMenus()">✕</button>
+        </div>
+        
+        <div id="menu-categories">
+            <div class="menu-category" onclick="CampusApp.openSubmenu('корпуса')">
+                <span> Корпуса</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-category" onclick="CampusApp.openSubmenu('общежития')">
+                <span> Общежития</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-category" onclick="CampusApp.openSubmenu('спорт')">
+                <span> Спорткомплекс</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-category" onclick="CampusApp.openSubmenu('магазины')">
+                <span> Магазины</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-category" onclick="CampusApp.openSubmenu('остановки')">
+                <span> Остановки</span>
+                <span class="arrow">›</span>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" id="search-input" placeholder="Поиск по объектам..." oninput="CampusApp.handleSearch(this.value)">
+    <div id="search-results" class="search-results"></div>
+    <div id="menu-categories">
+        <div id="search-results" class="search-results"></div>
+
+    <!-- Подменю -->
+    <div id="submenu">
+        <div class="submenu-header">
+            <button class="back-btn" onclick="CampusApp.closeSubmenu()">←</button>
+            <span id="submenu-title">Категория</span>
+            <button class="close-submenu" onclick="CampusApp.closeAllMenus()">✕</button>
+        </div>
+        <div id="submenu-items"></div>
+    </div>
+
+    <!-- Плашка -->
+    <div id="info-panel">
+        <div class="panel-handle"></div>
+        <button class="close-btn" onclick="CampusApp.closePanel()">✕</button>
+        <span class="type-badge" id="panel-badge">Корпус</span>
+        <h2 id="panel-title">Название здания</h2>
+        <p id="panel-address">Адрес</p>
+        <p id="panel-desc">Описание здания</p>
+        <div class="panel-extra" id="panel-extra">
+            <p>Дополнительная информация</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

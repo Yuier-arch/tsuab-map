@@ -1,0 +1,480 @@
+/* ====== БАЗОВЫЕ СТИЛИ ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ====== ПОДКЛЮЧЕНИЕ ШРИФТА ====== */
+@font-face {
+    font-family: 'Europe Ext';
+    src: url('europeextnormal.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Применяем шрифт ко ВСЕМ элементам */
+* {
+    font-family: 'Europe Ext', 'DIN', 'PT Sans', sans-serif !important;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #e8e8e8;
+}
+
+/* ====== ПЛАШКА ====== */
+#info-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px 20px 30px;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease;
+    touch-action: pan-y;
+    max-height: 30vh; /* Свернутое состояние */
+    overflow: hidden;
+}
+
+#info-panel.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+#info-panel.expanded {
+    max-height: 70vh; /* Развёрнутое состояние */
+}
+
+.panel-handle {
+    width: 40px;
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+    margin: 0 auto 10px;
+    cursor: grab;
+}
+
+.panel-extra {
+    display: none;
+    margin-top: 10px;
+}
+
+#info-panel.expanded .panel-extra {
+    display: block;
+}
+
+#info-panel .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #999;
+    padding: 5px 10px;
+}
+
+#info-panel h2 {
+    margin: 0 0 5px 0;
+    font-size: 22px;
+    color: #1a1a1a;
+}
+
+#info-panel p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.4;
+}
+
+.type-badge {
+    display: inline-block;
+    background: #4a90d9;
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* ====== КНОПКА МЕНЮ ====== */
+#menu-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 2000;
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    transition: transform 0.2s;
+}
+
+#menu-btn:hover {
+    transform: scale(1.05);
+}
+
+#menu-btn:active {
+    transform: scale(0.95);
+}
+
+/* ====== ЗАТЕМНЕНИЕ ====== */
+#menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+#menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+ 
+/* ====== ОСНОВНОЕ МЕНЮ ====== */
+#side-menu {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 290px;
+    height: 100%;
+    background: white;
+    z-index: 2001;
+    transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 2px 0 25px rgba(0,0,0,0.25);
+    overflow-y: auto;
+}
+
+#side-menu.active {
+    left: 0;
+}
+
+#side-menu .menu-header {
+    padding: 20px;
+    background: rgb(131, 31, 65);
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#side-menu .menu-header .close-menu {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+#search-container {
+    position: fixed;
+    top: 15px;
+    left: 70px;
+    z-index: 2000;
+}
+
+#search-input {
+    width: 100%;                    /* ← Статичная ширина */
+    height: 48px;                    /* ← Та же высота, что у кнопки меню */
+    padding: 0 16px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+    font-size: 14px;
+    outline: none;
+    background: white;
+}
+
+#search-results {
+    display: none;
+    margin-top: 8px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#search-results.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    #search-container {
+        left: 70px;
+        right: 70px;
+    }
+}
+
+/* Для широких экранов */
+@media (min-width: 769px) {
+    #search-container {
+        left: 70px;
+        right: auto;
+        width: 350px;
+    }
+}
+
+.menu-category {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.menu-category:hover {
+    background: #f5f7fa;
+}
+
+.menu-category .arrow {
+    color: #bbb;
+    font-size: 18px;
+}
+
+/* ====== ПОДМЕНЮ ====== */
+#submenu {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 290px;
+    height: 100%;
+    background: white;
+    z-index: 2002;
+    transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 2px 0 25px rgba(0,0,0,0.25);
+    overflow-y: auto;
+}
+
+#submenu.active {
+    left: 0;
+}
+
+#submenu .submenu-header {
+    padding: 15px 10px;
+    background: #f0f0f0;
+    font-size: 17px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#submenu .back-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+    padding: 5px 10px;
+}
+
+#submenu .close-submenu {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    padding: 5px;
+}
+
+.submenu-item {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.submenu-item:hover {
+    background: #e8f0fe;
+}
+
+.submenu-item .color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+/* ====== КНОПКИ ЗУМА СПРАВА ====== */
+.leaflet-control-zoom {
+    margin-top: 15px !important;
+    margin-right: 15px !important;
+}
+
+/* ====== АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ====== */
+@media (max-width: 768px) {
+    #info-panel {
+        padding: 15px 15px 25px;
+        border-radius: 16px 16px 0 0;
+    }
+    
+    #info-panel h2 {
+        font-size: 19px;
+    }
+    
+    #info-panel p {
+        font-size: 14px;
+    }
+    
+    .close-btn {
+        font-size: 24px !important;
+    }
+}
+
+
+
+.search-box {
+    padding: 0;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-bottom: 1px solid #f1e6e6;
+    font-family: 'Europe Ext', 'DIN', 'PT Sans', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: background 0.2s;
+    background: #f7dcdc;
+    border-radius: 0;
+}
+
+.search-box input:focus {
+    background: #ebd1d4;
+}
+
+.search-box input::placeholder {
+    color: #cfb9b9;
+}
+
+.search-results {
+    display: none;
+}
+
+.search-results.active {
+    display: block;
+}
+
+.search-empty {
+    padding: 24px 20px;
+    text-align: center;
+    color: #c55555;
+    font-size: 14px;
+}
+
+
+
+/* ====== КНОПКА СБРОСА ВИДА ====== */
+#reset-view-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    background: white;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+    cursor: pointer;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+#reset-view-btn.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+#reset-view-btn:active {
+    transform: scale(0.9);
+}
+
+/* ====== ТЁМНАЯ ТЕМА — дополнения ====== */
+@media (prefers-color-scheme: dark) {
+    #reset-view-btn {
+        background: #3a3a3a;
+    }
+    
+    .search-box input {
+        background: #2a2a2a;
+        border-bottom-color: #444;
+        color: #fff;
+    }
+    
+    .search-box input:focus {
+        background: #333;
+    }
+    
+    .search-box input::placeholder {
+        color: #777;
+    }
+    
+    .search-empty {
+        color: #777;
+    }
+}
